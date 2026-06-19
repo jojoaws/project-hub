@@ -5,9 +5,9 @@ from sqlalchemy.orm import Session
 
 from app.db.session import SessionLocal
 
-from app.models.project import Project
+from app.models.projects import Project
 
-from app.schemas.project import (
+from app.schemas.projects import (
     ProjectCreate,
     ProjectResponse
 )
