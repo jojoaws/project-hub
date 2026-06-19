@@ -79,22 +79,21 @@ def register(
 
     db.refresh(user)
 
-publish_event(
+    publish_event(
 
-    event_type="user_registered",
+        event_type="user_registered",
 
-    payload={
+        payload={
 
-        "email": user.email,
+            "email": user.email,
 
-        "full_name": user.full_name
+            "full_name": user.full_name
 
-    }
+        }
 
-)
+    )
 
     return user
-
 
 @router.post("/login")
 def login(

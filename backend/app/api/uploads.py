@@ -41,29 +41,29 @@ def upload_profile_picture(
         "profile-pictures"
     )
 
-publish_event(
+    publish_event(
 
-    event_type="file_uploaded",
+        event_type="file_uploaded",
 
-    payload={
+        payload={
 
-        "file_type": "profile-picture",
+            "file_type": "profile-picture",
 
-        "user_email": current_user.email,
+            "user_email": current_user.email,
 
-        "user_name": current_user.full_name,
+            "user_name": current_user.full_name,
 
-        "s3_key": key
+            "s3_key": key
 
-    }
+        }
 
-)
+    )
 
     return {
 
-        "message": "Profile picture uploaded",
+    "message": "Profile picture uploaded",
 
-        "s3_key": key
+    "s3_key": key
 
     }
 
@@ -90,29 +90,29 @@ def upload_project_image(
         "project-images"
     )
 
-publish_event(
+    publish_event(
 
-    event_type="file_uploaded",
+        event_type="file_uploaded",
 
-    payload={
+        payload={
 
-        "file_type": "project-image",
+            "file_type": "project-image",
 
-        "user_email": current_user.email,
+            "user_email": current_user.email,
 
-        "user_name": current_user.full_name,
+            "user_name": current_user.full_name,
 
-        "s3_key": key
+            "s3_key": key
 
-    }
+        }
 
-)
+    )
 
     return {
 
-        "message": "Project image uploaded",
+    "message": "Project image uploaded",
 
-        "s3_key": key
+    "s3_key": key
 
     }
 
@@ -130,28 +130,28 @@ def upload_resume(
         "resumes"
     )
 
-publish_event(
+    publish_event(
 
-    event_type="file_uploaded",
+        event_type="file_uploaded",
 
-    payload={
+        payload={
 
-        "file_type": "resume",
+            "file_type": "resume",
 
-        "user_email": current_user.email,
+            "user_email": current_user.email,
 
-        "user_name": current_user.full_name,
+            "user_name": current_user.full_name,
 
-        "s3_key": key
+            "s3_key": key
 
-    }
+        }
 
-)
+    )
 
     return {
 
-        "message": "Resume uploaded",
+    "message": "Resume uploaded",
 
-        "s3_key": key
+    "s3_key": key
 
     }

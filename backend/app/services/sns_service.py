@@ -24,6 +24,14 @@ def publish_event(
 
 ):
 
+    if not SNS_TOPIC_ARN:
+
+        print(
+            f"SNS disabled - skipped event: {event_type}"
+        )
+
+        return
+
     sns_client.publish(
 
         TopicArn=SNS_TOPIC_ARN,

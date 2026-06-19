@@ -72,24 +72,23 @@ def create_project(
 
     db.refresh(project)
 
-publish_event(
+    publish_event(
 
-    event_type="project_created",
+        event_type="project_created",
 
-    payload={
+        payload={
 
-        "user_email": current_user.email,
+            "user_email": current_user.email,
 
-        "user_name": current_user.full_name,
+            "user_name": current_user.full_name,
 
-        "project_title": project.title
+            "project_title": project.title
 
-    }
+        }
 
-)
+    )
 
     return project
-
 
 @router.get(
     "/",
