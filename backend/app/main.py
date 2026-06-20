@@ -8,11 +8,27 @@ from app.api.uploads import router as uploads_router
 
 from app.api.projects import router as projects_router
 
+from fastapi.middleware.cors import CORSMiddleware
+
 init_db()
 
 app = FastAPI(
     title="ProjectHub API",
     version="1.0.0"
+)
+
+app.add_middleware(
+    CORSMiddleware,
+
+    allow_origins=[
+        "http://localhost:5173"
+    ],
+
+    allow_credentials=True,
+
+    allow_methods=["*"],
+
+    allow_headers=["*"]
 )
 
 app.include_router(

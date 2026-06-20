@@ -1,0 +1,51 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+main {
+  max-width: 1000px;
+  margin: auto;
+  padding: 10px 20px;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 12px 20px;
+
+  border-bottom: 1px solid #ddd;
+}
+
+.navbar-logo a {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 20px;
+}
+
+footer {
+  padding: 10px;
+  border-top: 1px solid #ddd;
+  text-align: center;
+  margin-top: 20px;
+}
+
+a {
+  margin-right: 15px;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  padding: 8px 16px;
+}
+
+input {
+  padding: 8px;
+}
