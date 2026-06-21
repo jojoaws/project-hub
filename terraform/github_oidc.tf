@@ -27,9 +27,7 @@ resource "aws_iam_role" "github_actions" {
         Effect = "Allow"
 
         Principal = {
-
           Federated = aws_iam_openid_connect_provider.github.arn
-
         }
 
         Action = "sts:AssumeRoleWithWebIdentity"
@@ -37,9 +35,11 @@ resource "aws_iam_role" "github_actions" {
         Condition = {
 
           StringEquals = {
-
             "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
+          }
 
+          StringLike = {
+            "token.actions.githubusercontent.com:sub" = "repo:jojoaws/project-hub:*"
           }
 
         }
@@ -69,17 +69,11 @@ resource "aws_iam_policy" "github_actions" {
         Action = [
 
           "ecr:GetAuthorizationToken",
-
           "ecr:BatchCheckLayerAvailability",
-
           "ecr:CompleteLayerUpload",
-
           "ecr:UploadLayerPart",
-
           "ecr:InitiateLayerUpload",
-
           "ecr:PutImage",
-
           "ecr:BatchGetImage"
 
         ]
@@ -95,11 +89,8 @@ resource "aws_iam_policy" "github_actions" {
         Action = [
 
           "ecs:DescribeServices",
-
           "ecs:DescribeTaskDefinition",
-
           "ecs:RegisterTaskDefinition",
-
           "ecs:UpdateService"
 
         ]

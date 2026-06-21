@@ -47,13 +47,13 @@ resource "aws_db_instance" "postgres" {
 
   password = local.db_credentials.password
 
-  multi_az = true
+  multi_az = false
 
   publicly_accessible = false
 
   storage_encrypted = true
 
-  backup_retention_period = 7
+  backup_retention_period = 0
 
   skip_final_snapshot = true
 
