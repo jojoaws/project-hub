@@ -5,3 +5,4 @@ project_name = "projecthub"
 sender_email = "noreply@projecthub.com"
 
 ops_email = "elokajosephine10@gmail.com"
+

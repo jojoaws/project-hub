@@ -1,7 +1,19 @@
 resource "random_password" "db_password" {
-  length           = 32
-  special          = true
+
+  length = 32
+
+  special = true
+
   override_special = "!#$%^&*()-_=+[]{}"
+
+}
+
+resource "random_password" "jwt_secret" {
+
+  length = 64
+
+  special = false
+
 }
 
 resource "aws_secretsmanager_secret" "db_credentials" {
@@ -26,6 +38,22 @@ resource "aws_secretsmanager_secret_version" "db_credentials" {
 
 }
 
+resource "aws_secretsmanager_secret" "jwt_secret" {
+
+  name = "${var.project_name}-jwt-secret"
+
+  description = "JWT secret for ProjectHub"
+
+}
+
+resource "aws_secretsmanager_secret_version" "jwt_secret" {
+
+  secret_id = aws_secretsmanager_secret.jwt_secret.id
+
+  secret_string = random_password.jwt_secret.result
+
+}
+
 resource "aws_iam_policy" "secrets_access" {
 
   name = "${var.project_name}-secrets-policy"
@@ -37,23 +65,32 @@ resource "aws_iam_policy" "secrets_access" {
     Statement = [
 
       {
+
         Effect = "Allow"
 
         Action = [
           "secretsmanager:GetSecretValue"
         ]
 
-        Resource = aws_secretsmanager_secret.db_credentials.arn
+        Resource = [
+
+          aws_secretsmanager_secret.db_credentials.arn,
+
+          aws_secretsmanager_secret.jwt_secret.arn
+
+        ]
+
       }
 
     ]
+
   })
 
 }
 
-resource "aws_iam_role_policy_attachment" "task_secrets_access" {
+resource "aws_iam_role_policy_attachment" "execution_secrets_access" {
 
-  role = aws_iam_role.ecs_task_role.name
+  role = aws_iam_role.ecs_execution_role.name
 
   policy_arn = aws_iam_policy.secrets_access.arn
 

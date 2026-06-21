@@ -36,11 +36,37 @@ resource "aws_ecs_task_definition" "api" {
         }
       ]
 
-      secrets = [
+      environment = [
+
         {
-          name      = "DB_SECRET_ARN"
-          valueFrom = aws_secretsmanager_secret.db_credentials.arn
+          name  = "DATABASE_URL"
+          value = "postgresql+psycopg2://projecthub_admin:${random_password.db_password.result}@${aws_db_instance.postgres.address}:5432/projecthub"
+        },
+
+        {
+          name  = "AWS_REGION"
+          value = var.aws_region
+        },
+
+        {
+          name  = "S3_BUCKET_NAME"
+          value = aws_s3_bucket.uploads.bucket
+        },
+
+        {
+          name  = "SNS_TOPIC_ARN"
+          value = aws_sns_topic.notifications.arn
         }
+
+      ]
+
+      secrets = [
+
+        {
+          name      = "JWT_SECRET_KEY"
+          valueFrom = aws_secretsmanager_secret.jwt_secret.arn
+        }
+
       ]
 
       logConfiguration = {
