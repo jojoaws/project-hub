@@ -1,0 +1,102 @@
+{
+    "taskDefinitionArn": "arn:aws:ecs:us-east-1:677920913262:task-definition/projecthub-api:2",
+    "containerDefinitions": [
+        {
+            "name": "api",
+            "image": "677920913262.dkr.ecr.us-east-1.amazonaws.com/projecthub-api:latest",
+            "cpu": 0,
+            "portMappings": [
+                {
+                    "containerPort": 8000,
+                    "hostPort": 8000,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": true,
+            "environment": [
+                {
+                    "name": "AWS_REGION",
+                    "value": "us-east-1"
+                },
+                {
+                    "name": "SNS_TOPIC_ARN",
+                    "value": "arn:aws:sns:us-east-1:677920913262:projecthub-notifications"
+                },
+                {
+                    "name": "DATABASE_URL",
+                    "value": "postgresql+psycopg2://projecthub_admin:+]xw-icd[SvFAAnXE&aC&iich^$aEOCq@projecthub-db.cwpmqsemgs7c.us-east-1.rds.amazonaws.com:5432/projecthub"
+                },
+                {
+                    "name": "S3_BUCKET_NAME",
+                    "value": "projecthub-uploads"
+                }
+            ],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "secrets": [
+                {
+                    "name": "JWT_SECRET_KEY",
+                    "valueFrom": "arn:aws:secretsmanager:us-east-1:677920913262:secret:projecthub-jwt-secret-mLqRQ0"
+                }
+            ],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/projecthub",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            },
+            "systemControls": []
+        }
+    ],
+    "family": "projecthub-api",
+    "taskRoleArn": "arn:aws:iam::677920913262:role/projecthub-ecs-task-role",
+    "executionRoleArn": "arn:aws:iam::677920913262:role/projecthub-ecs-execution-role",
+    "networkMode": "awsvpc",
+    "revision": 2,
+    "volumes": [],
+    "status": "ACTIVE",
+    "requiresAttributes": [
+        {
+            "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+        },
+        {
+            "name": "ecs.capability.execution-role-awslogs"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.ecr-auth"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+        },
+        {
+            "name": "ecs.capability.secrets.asm.environment-variables"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.task-iam-role"
+        },
+        {
+            "name": "ecs.capability.execution-role-ecr-pull"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+        },
+        {
+            "name": "ecs.capability.task-eni"
+        }
+    ],
+    "placementConstraints": [],
+    "compatibilities": [
+        "EC2",
+        "MANAGED_INSTANCES",
+        "FARGATE"
+    ],
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "512",
+    "memory": "1024",
+    "registeredAt": "2026-06-21T11:45:51.986000-07:00",
+    "registeredBy": "arn:aws:iam::677920913262:user/Cloud-admin"
+}

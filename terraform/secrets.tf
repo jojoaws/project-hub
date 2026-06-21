@@ -16,6 +16,29 @@ resource "random_password" "jwt_secret" {
 
 }
 
+
+resource "aws_secretsmanager_secret" "app_secrets" {
+
+  name = "${var.project_name}-app-secrets"
+
+  description = "Application runtime secrets for ProjectHub"
+
+}
+
+resource "aws_secretsmanager_secret_version" "app_secrets" {
+
+  secret_id = aws_secretsmanager_secret.app_secrets.id
+
+  secret_string = jsonencode({
+
+    JWT_SECRET_KEY = random_password.jwt_secret.result
+
+    DATABASE_URL = "postgresql+psycopg2://projecthub_admin:${random_password.db_password.result}@${aws_db_instance.postgres.address}:5432/projecthub"
+
+  })
+
+}
+
 resource "aws_secretsmanager_secret" "db_credentials" {
 
   name = "${var.project_name}-db-credentials"
@@ -76,7 +99,9 @@ resource "aws_iam_policy" "secrets_access" {
 
           aws_secretsmanager_secret.db_credentials.arn,
 
-          aws_secretsmanager_secret.jwt_secret.arn
+          aws_secretsmanager_secret.jwt_secret.arn,
+
+          aws_secretsmanager_secret.app_secrets.arn
 
         ]
 

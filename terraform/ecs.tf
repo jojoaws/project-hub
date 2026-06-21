@@ -39,11 +39,6 @@ resource "aws_ecs_task_definition" "api" {
       environment = [
 
         {
-          name  = "DATABASE_URL"
-          value = "postgresql+psycopg2://projecthub_admin:${random_password.db_password.result}@${aws_db_instance.postgres.address}:5432/projecthub"
-        },
-
-        {
           name  = "AWS_REGION"
           value = var.aws_region
         },
@@ -61,6 +56,11 @@ resource "aws_ecs_task_definition" "api" {
       ]
 
       secrets = [
+
+        {
+          name      = "DATABASE_URL"
+          valueFrom = "${aws_secretsmanager_secret.app_secrets.arn}:DATABASE_URL::"
+        },
 
         {
           name      = "JWT_SECRET_KEY"
@@ -106,6 +106,15 @@ resource "aws_ecs_service" "api" {
   deployment_minimum_healthy_percent = 100
 
   deployment_maximum_percent = 200
+
+  lifecycle {
+
+    ignore_changes = [
+      task_definition,
+      desired_count
+    ]
+
+  }
 
   network_configuration {
 

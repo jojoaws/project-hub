@@ -1,0 +1,58 @@
+{
+  "family": "projecthub-api",
+  "taskRoleArn": "arn:aws:iam::677920913262:role/projecthub-ecs-task-role",
+  "executionRoleArn": "arn:aws:iam::677920913262:role/projecthub-ecs-execution-role",
+  "networkMode": "awsvpc",
+  "containerDefinitions": [
+    {
+      "name": "api",
+      "image": "IMAGE_URI",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 8000,
+          "hostPort": 8000,
+          "protocol": "tcp"
+        }
+      ],
+      "environment": [
+        {
+          "name": "S3_BUCKET_NAME",
+          "value": "projecthub-uploads"
+        },
+        {
+          "name": "AWS_REGION",
+          "value": "us-east-1"
+        },
+        {
+          "name": "SNS_TOPIC_ARN",
+          "value": "arn:aws:sns:us-east-1:677920913262:projecthub-notifications"
+        }
+      ],
+      "secrets": [
+        {
+          "name": "DATABASE_URL",
+          "valueFrom": "arn:aws:secretsmanager:us-east-1:677920913262:secret:projecthub-app-secrets-Tq1Gih:DATABASE_URL::"
+        },
+        {
+          "name": "JWT_SECRET_KEY",
+          "valueFrom": "arn:aws:secretsmanager:us-east-1:677920913262:secret:projecthub-jwt-secret-mLqRQ0"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/projecthub",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
+    }
+  ],
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "cpu": "512",
+  "memory": "1024",
+  "volumes": []
+}
