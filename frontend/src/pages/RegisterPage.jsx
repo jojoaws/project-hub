@@ -1,10 +1,11 @@
 import { useState } from "react";
 import Layout from "../components/Layout";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import api from "../services/api";
 
 function RegisterPage() {
 
-  const [username, setUsername] = useState("");
+  const [fullname, setFullname] = useState("");
 
   const [email, setEmail] = useState("");
 
@@ -16,16 +17,42 @@ function RegisterPage() {
 
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
 
     e.preventDefault();
 
-    console.log({
-      username,
-      email,
-      password,
-      confirmPassword
-    });
+    if (password !== confirmPassword) {
+
+      alert("Passwords do not match");
+
+      return;
+    }
+
+    try {
+
+      const response = await api.post(
+        "/auth/register",
+        {
+          full_name: fullname,
+          email,
+          password
+        }
+      );
+
+      console.log(response.data);
+
+      alert("Registration successful");
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert(
+        error.response?.data?.detail ||
+        "Registration failed"
+      );
+
+    }
 
   };
 
@@ -37,14 +64,14 @@ function RegisterPage() {
       <form onSubmit={handleRegister}>
 
         <div>
-          <label>Username</label>
+          <label>Full Name</label>
           <br />
 
           <input
             type="text"
-            value={username}
+            value={fullname}
             onChange={(e) =>
-              setUsername(e.target.value)
+              setFullname(e.target.value)
             }
           />
         </div>

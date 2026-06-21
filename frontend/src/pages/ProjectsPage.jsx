@@ -1,52 +1,87 @@
+import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
+import api from "../services/api";
 
 function ProjectsPage() {
+
+  const [projects, setProjects] = useState([]);
+
+  useEffect(() => {
+
+    const fetchProjects = async () => {
+
+      const token =
+        localStorage.getItem("token");
+
+      try {
+
+        const response = await api.get(
+          "/projects/",
+          {
+            headers: {
+              Authorization:
+                `Bearer ${token}`
+            }
+          }
+        );
+
+        setProjects(
+          response.data
+        );
+
+      } catch (error) {
+
+        console.error(error);
+
+      }
+
+    };
+
+    fetchProjects();
+
+  }, []);
+
   return (
     <Layout>
 
       <h1>Projects</h1>
 
-      <p>
-        Browse community projects.
-      </p>
+      {projects.length === 0 ? (
 
-      <div
-        style={{
-          border: "1px solid #ddd",
-          padding: "15px",
-          borderRadius: "8px"
-        }}
-      >
+        <p>No projects found.</p>
 
-      <div
-        style={{
-          width: "100%",
-          height: "250px",
-          backgroundColor: "#e5e7eb",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          borderRadius: "8px"
-        }}
-     >
-        Project Image
-     </div>
+      ) : (
 
-        <h2>Title</h2>
+        projects.map((project) => (
 
-        <p>
-          Description
-        </p>
+          <div
+            key={project.id}
+            className="card project-card"
+          >
 
-        <p>
-          <strong>Technology Stack:</strong>
-        </p>
+            <div className="project-image">
 
-        <p>
-          React, FastAPI, PostgreSQL, AWS
-        </p>
+              Project Image
 
-      </div>
+            </div>
+
+            <h2>
+              {project.title}
+            </h2>
+
+            <p className="project-description">
+              {project.description}
+            </p>
+
+            <p className="project-stack">
+              🏷 {project.tech_stack}
+            </p>
+
+          </div>
+
+        ))
+
+      )}
 
     </Layout>
   );

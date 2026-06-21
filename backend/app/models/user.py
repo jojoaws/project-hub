@@ -41,6 +41,11 @@ class User(Base):
         nullable=True
     )
 
+    bio = Column(
+        String,
+        nullable=True
+    )
+
     created_at = Column(
         DateTime,
         default=datetime.utcnow

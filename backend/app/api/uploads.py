@@ -2,21 +2,19 @@ from fastapi import APIRouter
 from fastapi import File
 from fastapi import UploadFile
 from fastapi import HTTPException
-
-from app.services.s3_service import upload_file
-
 from fastapi import Depends
 
+from app.services.s3_service import upload_file
 from app.dependencies.auth import get_current_user
-
 from app.models.user import User
-
 from app.services.sns_service import publish_event
 
 router = APIRouter(
     prefix="/uploads",
     tags=["Uploads"]
 )
+
+MAX_FILE_SIZE = 20 * 1024 * 1024
 
 
 @router.post("/profile-picture")
@@ -35,6 +33,17 @@ def upload_profile_picture(
             status_code=400,
             detail="Image file required"
         )
+
+    contents = file.file.read()
+
+    if len(contents) > MAX_FILE_SIZE:
+
+        raise HTTPException(
+            status_code=400,
+            detail="Maximum file size is 20 MB"
+        )
+
+    file.file.seek(0)
 
     key = upload_file(
         file,
@@ -61,9 +70,9 @@ def upload_profile_picture(
 
     return {
 
-    "message": "Profile picture uploaded",
+        "message": "Profile picture uploaded",
 
-    "s3_key": key
+        "s3_key": key
 
     }
 
@@ -84,6 +93,17 @@ def upload_project_image(
             status_code=400,
             detail="Image file required"
         )
+
+    contents = file.file.read()
+
+    if len(contents) > MAX_FILE_SIZE:
+
+        raise HTTPException(
+            status_code=400,
+            detail="Maximum file size is 20 MB"
+        )
+
+    file.file.seek(0)
 
     key = upload_file(
         file,
@@ -110,9 +130,9 @@ def upload_project_image(
 
     return {
 
-    "message": "Project image uploaded",
+        "message": "Project image uploaded",
 
-    "s3_key": key
+        "s3_key": key
 
     }
 
@@ -124,6 +144,24 @@ def upload_resume(
         get_current_user
     )
 ):
+
+    if file.content_type != "application/pdf":
+
+        raise HTTPException(
+            status_code=400,
+            detail="PDF file required"
+        )
+
+    contents = file.file.read()
+
+    if len(contents) > MAX_FILE_SIZE:
+
+        raise HTTPException(
+            status_code=400,
+            detail="Maximum file size is 20 MB"
+        )
+
+    file.file.seek(0)
 
     key = upload_file(
         file,
@@ -150,8 +188,8 @@ def upload_resume(
 
     return {
 
-    "message": "Resume uploaded",
+        "message": "Resume uploaded",
 
-    "s3_key": key
+        "s3_key": key
 
     }

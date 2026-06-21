@@ -49,3 +49,185 @@ button {
 input {
   padding: 8px;
 }
+
+.card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  margin-top: 20px;
+  background: white;
+}
+
+.project-image {
+  height: 180px;
+  background: #f5f5f5;
+  border-radius: 10px;
+  margin-bottom: 15px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #777;
+}
+
+.profile-picture {
+  width: 140px;
+  height: 140px;
+
+  border-radius: 50%;
+
+  background: #eee;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 20px;
+}
+
+.profile-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.card {
+  margin-bottom: 20px;
+}
+
+.dashboard-button {
+  display: inline-block;
+  margin-right: 10px;
+  margin-top: 10px;
+}
+
+.project-preview {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #ddd;
+}
+
+.profile-card {
+  text-align: center;
+}
+
+.avatar-section {
+  position: relative;
+  width: 150px;
+  margin: 0 auto 20px auto;
+}
+
+.profile-picture {
+  width: 150px;
+  height: 150px;
+
+  border-radius: 50%;
+
+  background: #e5e7eb;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 60px;
+
+  margin: 0 auto;
+}
+
+.edit-icon {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.avatar-section .edit-icon {
+  position: absolute;
+  right: 0;
+  bottom: 5px;
+
+  background: white;
+
+  border-radius: 50%;
+
+  padding: 8px;
+}
+
+.profile-email {
+  margin-top: -10px;
+  color: #666;
+}
+
+.bio-section {
+  text-align: left;
+  margin-top: 20px;
+}
+
+.bio-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bio-header h3 {
+  margin: 0;
+}
+
+.bio-text {
+  margin-top: 4px;
+  margin-bottom: 0;
+}
+
+.project-card {
+  margin-bottom: 20px;
+}
+
+.project-image {
+  height: 180px;
+
+  background: #f3f4f6;
+
+  border-radius: 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 15px;
+
+  color: #777;
+}
+
+.project-description {
+  margin: 10px 0;
+}
+
+.project-stack {
+  color: #555;
+  font-weight: 500;
+}
+
+.dashboard-welcome {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.quick-actions {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.quick-actions li {
+  margin-bottom: 12px;
+}
+
+.quick-actions {
+  padding-left: 0;
+}
+
+.quick-actions li {
+  list-style: none;
+  margin-bottom: 12px;
+  font-size: 1rem;
+}

@@ -8,6 +8,8 @@ import ContactPage from "./pages/ContactPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import DashboardPage from "./pages/DashboardPage";
+import ProtectedRoute from "./components/ProtectedRoute";
+import CreateProjectPage from "./pages/CreateProjectPage";
 
 function App() {
   return (
@@ -30,7 +32,7 @@ function App() {
         />
 
         <Route
-          path="/profile/:username"
+          path="/profile"
           element={<ProfilePage />}
         />
 
@@ -50,8 +52,17 @@ function App() {
         />
 
         <Route
+          path="/create-project"
+          element={<CreateProjectPage />}
+        />
+
+        <Route
           path="/dashboard"
-          element={<DashboardPage />}
+          element={
+            <ProtectedRoute>
+              <DashboardPage />
+            </ProtectedRoute>
+          }
         />
 
       </Routes>

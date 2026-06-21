@@ -28,6 +28,8 @@ class UserResponse(BaseModel):
 
     profile_picture: str | None = None
 
+    bio: str | None = None
+
     class Config:
 
         from_attributes = True

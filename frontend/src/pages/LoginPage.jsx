@@ -2,6 +2,7 @@ import { useState } from "react";
 import Layout from "../components/Layout";
 import api from "../services/api";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 function LoginPage() {
 
@@ -10,6 +11,8 @@ function LoginPage() {
   const [password, setPassword] = useState("");
 
   const [showPassword, setShowPassword] = useState(false);
+
+  const navigate = useNavigate()
 
   const handleLogin = async (e) => {
 
@@ -25,11 +28,25 @@ function LoginPage() {
         }
       );
 
+      localStorage.setItem(
+        "token",
+        response.data.access_token
+      );
+
+      alert("Login successful");
+
+      navigate("/dashboard");
+
       console.log(response.data);
 
     } catch (error) {
 
       console.error(error);
+
+      alert(
+        error.response?.data?.detail ||
+        "Login failed"
+      );
 
     }
 
@@ -69,12 +86,14 @@ function LoginPage() {
             }
           />
 
-         <button
-           type="button"
-           onClick={() => setShowPassword(!showPassword)}
-         >
-           {showPassword ? <FaEyeSlash /> : <FaEye />}
-         </button>
+          <button
+            type="button"
+            onClick={() =>
+              setShowPassword(!showPassword)
+            }
+          >
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          </button>
 
         </div>
 
@@ -89,4 +108,5 @@ function LoginPage() {
     </Layout>
   );
 }
+
 export default LoginPage;

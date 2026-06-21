@@ -8,6 +8,8 @@ from app.api.uploads import router as uploads_router
 
 from app.api.projects import router as projects_router
 
+from app.api import user
+
 from fastapi.middleware.cors import CORSMiddleware
 
 init_db()
@@ -41,6 +43,10 @@ app.include_router(
 
 app.include_router(
     projects_router
+)
+
+app.include_router(
+    user.router
 )
 
 @app.get("/health")
