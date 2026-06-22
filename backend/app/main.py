@@ -1,4 +1,3 @@
-jojo@Jojo-of-the-Good-Life:~/aws/project-hub$ cat backend/app/main.py
 from fastapi import FastAPI
 
 from app.api.auth import router as auth_router

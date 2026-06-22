@@ -97,14 +97,18 @@ resource "aws_cloudfront_distribution" "frontend" {
 
     path_pattern = "/api/*"
 
+    target_origin_id = "backend-alb"
+
+    viewer_protocol_policy = "redirect-to-https"
+
     allowed_methods = [
+      "DELETE",
       "GET",
       "HEAD",
       "OPTIONS",
-      "PUT",
-      "POST",
       "PATCH",
-      "DELETE"
+      "POST",
+      "PUT"
     ]
 
     cached_methods = [
@@ -112,19 +116,15 @@ resource "aws_cloudfront_distribution" "frontend" {
       "HEAD"
     ]
 
-    target_origin_id = "backend-alb"
+    cache_policy_id = "4135ea2d-6df8-44a3-9df3-4b5a84be39ad"
 
-    viewer_protocol_policy = "redirect-to-https"
+    origin_request_policy_id = "b689b0a8-53d0-40ab-b840-010363296117"
 
-    forwarded_values {
+    function_association {
 
-      query_string = true
+      event_type = "viewer-request"
 
-      headers = ["*"]
-
-      cookies {
-        forward = "all"
-      }
+      function_arn = aws_cloudfront_function.strip_api_prefix.arn
 
     }
 
@@ -145,5 +145,39 @@ resource "aws_cloudfront_distribution" "frontend" {
     cloudfront_default_certificate = true
 
   }
+
+}
+
+resource "aws_cloudfront_function" "strip_api_prefix" {
+
+  name    = "${var.project_name}-strip-api-prefix"
+
+  runtime = "cloudfront-js-2.0"
+
+  comment = "Strips /api prefix from backend requests"
+
+  publish = true
+
+  code = <<EOF
+function handler(event) {
+
+    var request = event.request;
+
+    if (request.uri.startsWith('/api')) {
+
+        request.uri = request.uri.replace('/api', '');
+
+        if (request.uri === '') {
+
+            request.uri = '/';
+
+        }
+
+    }
+
+    return request;
+
+}
+EOF
 
 }
