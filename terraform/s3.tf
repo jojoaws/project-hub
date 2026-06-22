@@ -2,6 +2,8 @@ resource "aws_s3_bucket" "frontend" {
 
   bucket = "${var.project_name}-frontend"
 
+  force_destroy = true
+
   tags = {
     Name = "${var.project_name}-frontend"
   }
@@ -23,6 +25,8 @@ resource "aws_s3_bucket_versioning" "frontend" {
 resource "aws_s3_bucket" "uploads" {
 
   bucket = "${var.project_name}-uploads"
+
+  force_destroy = true
 
   tags = {
     Name = "${var.project_name}-uploads"
