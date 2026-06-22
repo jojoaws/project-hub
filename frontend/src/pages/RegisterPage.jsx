@@ -2,6 +2,7 @@ import { useState } from "react";
 import Layout from "../components/Layout";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import api from "../services/api";
+import { useNavigate } from "react-router-dom";
 
 function RegisterPage() {
 
@@ -16,6 +17,8 @@ function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
 
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const  navigate = useNavigate();
 
   const handleRegister = async (e) => {
 
@@ -42,6 +45,8 @@ function RegisterPage() {
       console.log(response.data);
 
       alert("Registration successful");
+
+      navigate("/login");
 
     } catch (error) {
 

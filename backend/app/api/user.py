@@ -8,6 +8,10 @@ from app.dependencies.auth import get_db
 
 from app.models.user import User
 
+from app.services.s3_service import (
+    generate_presigned_url
+)
+
 router = APIRouter(
     prefix="/users",
     tags=["Users"]
@@ -30,7 +34,11 @@ def get_me(
         "email": current_user.email,
 
         "profile_picture":
-            current_user.profile_picture,
+            generate_presigned_url(
+                current_user.profile_picture
+            )
+            if current_user.profile_picture
+            else None,
 
         "bio":
             current_user.bio

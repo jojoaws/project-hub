@@ -25,8 +25,9 @@ function CreateProjectPage() {
 
     try {
 
-      await api.post(
-        "/projects/",
+      const projectResponse =
+  await api.post(
+    "/projects/",
         {
           title,
           description,
@@ -51,7 +52,7 @@ function CreateProjectPage() {
         );
 
         await api.post(
-          "/uploads/project-image",
+  `/uploads/project-image?project_id=${projectResponse.data.id}`,
           formData,
           {
             headers: {

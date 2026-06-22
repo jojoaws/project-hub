@@ -90,6 +90,96 @@ function ProfilePage() {
 
   };
 
+  const uploadProfilePicture = async (file) => {
+
+    if (!file) return;
+
+    const token =
+      localStorage.getItem("token");
+
+    const formData =
+      new FormData();
+
+    formData.append(
+      "file",
+      file
+    );
+
+    try {
+
+      await api.post(
+        "/uploads/profile-picture",
+        formData,
+        {
+          headers: {
+            Authorization:
+              `Bearer ${token}`
+          }
+        }
+      );
+
+      alert(
+        "Profile picture uploaded"
+      );
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert(
+        error.response?.data?.detail ||
+        "Upload failed"
+      );
+
+    }
+
+  };
+
+  const uploadResume = async (file) => {
+
+    if (!file) return;
+
+    const token =
+      localStorage.getItem("token");
+
+    const formData =
+      new FormData();
+
+    formData.append(
+      "file",
+      file
+    );
+
+    try {
+
+      await api.post(
+        "/uploads/resume",
+        formData,
+        {
+          headers: {
+            Authorization:
+              `Bearer ${token}`
+          }
+        }
+      );
+
+      alert(
+        "Resume uploaded"
+      );
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert(
+        error.response?.data?.detail ||
+        "Upload failed"
+      );
+
+    }
+
+  };
+
   return (
     <Layout>
 
@@ -99,12 +189,52 @@ function ProfilePage() {
 
         <div className="avatar-section">
 
+          <input
+            type="file"
+            accept="image/*"
+            id="profile-picture-upload"
+            style={{
+              display: "none"
+            }}
+            onChange={(e) =>
+              uploadProfilePicture(
+                e.target.files[0]
+              )
+            }
+          />
+
           <div className="profile-picture">
-            👤
-          </div>
+
+  {user?.profile_picture ? (
+
+    <img
+      src={user.profile_picture}
+      alt="Profile"
+      style={{
+        width: "150px",
+        height: "150px",
+        borderRadius: "50%",
+        objectFit: "cover"
+      }}
+    />
+
+  ) : (
+
+    "👤"
+
+  )}
+
+</div>
 
           <button
             className="edit-icon"
+            onClick={() =>
+              document
+                .getElementById(
+                  "profile-picture-upload"
+                )
+                .click()
+            }
           >
             <FaEdit />
           </button>
@@ -179,6 +309,46 @@ function ProfilePage() {
           )}
 
         </div>
+
+        <div className="bio-section">
+
+  <h3>
+    Resume
+  </h3>
+
+  <p>
+    Upload your resume (PDF only)
+  </p>
+
+  <button
+    onClick={() =>
+      document
+        .getElementById(
+          "resume-upload"
+        )
+        .click()
+    }
+  >
+    Upload Resume
+  </button>
+
+  <input
+  id="resume-upload"
+  type="file"
+  accept=".pdf"
+  style={{
+    display: "none"
+  }}
+  onChange={(e) => {
+    const file = e.target.files[0];
+
+    if (file) {
+      uploadResume(file);
+    }
+  }}
+/>
+
+</div>
 
       </div>
 

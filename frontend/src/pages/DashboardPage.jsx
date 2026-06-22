@@ -67,13 +67,7 @@ function DashboardPage() {
 
         <li>
            → <Link to="/profile">
-             Upload Profile Picture
-         </Link>
-       </li>
-
-       <li>
-         → <Link to="/profile">
-           Upload Resume
+             Manage Profile
          </Link>
        </li>
 

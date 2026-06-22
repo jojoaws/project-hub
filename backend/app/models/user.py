@@ -41,6 +41,11 @@ class User(Base):
         nullable=True
     )
 
+    resume = Column(
+    String,
+    nullable=True
+)
+
     bio = Column(
         String,
         nullable=True

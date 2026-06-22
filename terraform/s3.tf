@@ -92,6 +92,32 @@ resource "aws_s3_bucket_lifecycle_configuration" "uploads" {
 
 }
 
+resource "aws_s3_bucket_cors_configuration" "uploads" {
+
+  bucket = aws_s3_bucket.uploads.id
+
+  cors_rule {
+
+    allowed_headers = ["*"]
+
+    allowed_methods = [
+      "GET",
+      "HEAD",
+      "PUT",
+      "POST"
+    ]
+
+    allowed_origins = [
+      "http://localhost:5173",
+      "https://${aws_cloudfront_distribution.frontend.domain_name}"
+    ]
+
+    expose_headers = ["ETag"]
+
+    max_age_seconds = 3000
+  }
+}
+
 resource "aws_iam_policy" "s3_access" {
 
   name = "${var.project_name}-s3-policy"
