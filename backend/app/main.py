@@ -1,13 +1,17 @@
+jojo@Jojo-of-the-Good-Life:~/aws/project-hub$ cat backend/app/main.py
 from fastapi import FastAPI
 
-from fastapi.middleware.cors import CORSMiddleware
-
 from app.api.auth import router as auth_router
-from app.api.uploads import router as uploads_router
-from app.api.projects import router as projects_router
-from app.api import user
 
 from app.db.init_db import init_db
+
+from app.api.uploads import router as uploads_router
+
+from app.api.projects import router as projects_router
+
+from app.api import user
+
+from fastapi.middleware.cors import CORSMiddleware
 
 init_db()
 
@@ -18,32 +22,32 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
+
     allow_origins=[
         "http://localhost:5173"
     ],
+
     allow_credentials=True,
+
     allow_methods=["*"],
+
     allow_headers=["*"]
 )
 
 app.include_router(
-    auth_router,
-    prefix="/api"
+    auth_router
 )
 
 app.include_router(
-    uploads_router,
-    prefix="/api"
+    uploads_router
 )
 
 app.include_router(
-    projects_router,
-    prefix="/api"
+    projects_router
 )
 
 app.include_router(
-    user.router,
-    prefix="/api"
+    user.router
 )
 
 @app.get("/health")
