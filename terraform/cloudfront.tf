@@ -28,6 +28,40 @@ resource "aws_cloudfront_distribution" "frontend" {
 
   }
 
+  origin {
+
+    domain_name = aws_lb.main.dns_name
+
+    origin_id = "backend-alb"
+
+    custom_origin_config {
+
+      http_port = 80
+
+      https_port = 443
+
+      origin_protocol_policy = "http-only"
+
+      origin_ssl_protocols = ["TLSv1.2"]
+
+    }
+
+  }
+
+  custom_error_response {
+    error_code            = 403
+    response_code         = 200
+    response_page_path    = "/index.html"
+    error_caching_min_ttl = 10
+  }
+
+  custom_error_response {
+    error_code            = 404
+    response_code         = 200
+    response_page_path    = "/index.html"
+    error_caching_min_ttl = 10
+  }
+
   default_cache_behavior {
 
     allowed_methods = [
@@ -53,6 +87,43 @@ resource "aws_cloudfront_distribution" "frontend" {
 
       cookies {
         forward = "none"
+      }
+
+    }
+
+  }
+
+  ordered_cache_behavior {
+
+    path_pattern = "/api/*"
+
+    allowed_methods = [
+      "GET",
+      "HEAD",
+      "OPTIONS",
+      "PUT",
+      "POST",
+      "PATCH",
+      "DELETE"
+    ]
+
+    cached_methods = [
+      "GET",
+      "HEAD"
+    ]
+
+    target_origin_id = "backend-alb"
+
+    viewer_protocol_policy = "redirect-to-https"
+
+    forwarded_values {
+
+      query_string = true
+
+      headers = ["*"]
+
+      cookies {
+        forward = "all"
       }
 
     }

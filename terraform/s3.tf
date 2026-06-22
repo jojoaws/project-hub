@@ -161,3 +161,47 @@ resource "aws_iam_role_policy_attachment" "task_s3_access" {
   policy_arn = aws_iam_policy.s3_access.arn
 
 }
+
+resource "aws_s3_bucket_policy" "frontend" {
+
+  bucket = aws_s3_bucket.frontend.id
+
+  policy = jsonencode({
+
+    Version = "2012-10-17"
+
+    Statement = [
+
+      {
+
+        Sid = "AllowCloudFrontServicePrincipal"
+
+        Effect = "Allow"
+
+        Principal = {
+
+          Service = "cloudfront.amazonaws.com"
+
+        }
+
+        Action = "s3:GetObject"
+
+        Resource = "${aws_s3_bucket.frontend.arn}/*"
+
+        Condition = {
+
+          StringEquals = {
+
+            "AWS:SourceArn" = aws_cloudfront_distribution.frontend.arn
+
+          }
+
+        }
+
+      }
+
+    ]
+
+  })
+
+}
