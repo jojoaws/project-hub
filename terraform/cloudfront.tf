@@ -1,3 +1,15 @@
+data "aws_cloudfront_origin_request_policy" "all_viewer_except_host" {
+  name = "Managed-AllViewerExceptHostHeader"
+}
+
+data "aws_cloudfront_cache_policy" "caching_disabled" {
+  name = "Managed-CachingDisabled"
+}
+
+data "aws_cloudfront_cache_policy" "caching_optimized" {
+  name = "Managed-CachingOptimized"
+}
+
 resource "aws_cloudfront_origin_access_control" "frontend" {
 
   name = "${var.project_name}-oac"
@@ -81,15 +93,7 @@ resource "aws_cloudfront_distribution" "frontend" {
 
     compress = true
 
-    forwarded_values {
-
-      query_string = false
-
-      cookies {
-        forward = "none"
-      }
-
-    }
+    cache_policy_id = data.aws_cloudfront_cache_policy.caching_optimized.id
 
   }
 
@@ -116,9 +120,9 @@ resource "aws_cloudfront_distribution" "frontend" {
       "HEAD"
     ]
 
-    cache_policy_id = "4135ea2d-6df8-44a3-9df3-4b5a84be39ad"
+    cache_policy_id = data.aws_cloudfront_cache_policy.caching_disabled.id
 
-    origin_request_policy_id = "b689b0a8-53d0-40ab-b840-010363296117"
+    origin_request_policy_id = data.aws_cloudfront_origin_request_policy.all_viewer_except_host.id
 
     function_association {
 
@@ -127,7 +131,6 @@ resource "aws_cloudfront_distribution" "frontend" {
       function_arn = aws_cloudfront_function.strip_api_prefix.arn
 
     }
-
   }
 
   restrictions {
@@ -150,7 +153,7 @@ resource "aws_cloudfront_distribution" "frontend" {
 
 resource "aws_cloudfront_function" "strip_api_prefix" {
 
-  name    = "${var.project_name}-strip-api-prefix"
+  name = "${var.project_name}-strip-api-prefix"
 
   runtime = "cloudfront-js-2.0"
 
