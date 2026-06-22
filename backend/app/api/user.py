@@ -25,32 +25,32 @@ def get_me(
     )
 ):
 
-return {
+    return {
 
-    "id": current_user.id,
+        "id": current_user.id,
 
-    "full_name": current_user.full_name,
+        "full_name": current_user.full_name,
 
-    "email": current_user.email,
+        "email": current_user.email,
 
-    "profile_picture":
-        generate_presigned_url(
-            current_user.profile_picture
-        )
-        if current_user.profile_picture
-        else None,
+        "profile_picture":
+            generate_presigned_url(
+                current_user.profile_picture
+            )
+            if current_user.profile_picture
+            else None,
 
-    "resume_url":
-        generate_presigned_url(
-            current_user.resume
-        )
-        if current_user.resume
-        else None,
+        "resume_url":
+            generate_presigned_url(
+                current_user.resume
+            )
+            if current_user.resume
+            else None,
 
-    "bio":
-        current_user.bio
+        "bio":
+            current_user.bio
 
-}
+    }
 
 @router.put("/me/bio")
 def update_bio(
