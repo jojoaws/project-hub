@@ -46,7 +46,7 @@ app.include_router(
     prefix="/api"
 )
 
-@app.get("/api/health")
+@app.get("//health")
 def health_check():
 
     return {
