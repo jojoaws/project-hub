@@ -54,10 +54,13 @@ def upload_profile_picture(
         "profile-pictures"
     )
 
-    current_user.profile_picture = key
+    user = db.query(User).filter(
+    User.id == current_user.id
+    ).first()
+
+    user.profile_picture = key
 
     db.commit()
-
 
 #    publish_event(
 #        event_type="file_uploaded",
@@ -173,10 +176,13 @@ def upload_resume(
         "resumes"
     )
 
-    current_user.resume = key
+    user = db.query(User).filter(
+    User.id == current_user.id
+    ).first()
+
+    user.resume = key
 
     db.commit()
-
 
     publish_event(
         event_type="file_uploaded",
