@@ -58,7 +58,6 @@ def upload_profile_picture(
 
     db.commit()
 
-    db.refresh(current_user)
 
 #    publish_event(
 #        event_type="file_uploaded",
@@ -178,7 +177,6 @@ def upload_resume(
 
     db.commit()
 
-    db.refresh(current_user)
 
     publish_event(
         event_type="file_uploaded",
