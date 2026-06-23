@@ -12,11 +12,17 @@ from app.schemas.projects import (
     ProjectResponse
 )
 
+from app.services.s3_service import generate_presigned_url
+
 from app.dependencies.auth import get_current_user
 
 from app.models.user import User
 
 from app.services.sns_service import publish_event
+
+from app.services.s3_service import (
+    generate_presigned_url
+)
 
 router = APIRouter(
     prefix="/projects",
@@ -92,9 +98,8 @@ def create_project(
 
 @router.get(
     "/",
-    response_model=list[ProjectResponse]
+    response_model=list[dict]
 )
-
 def get_projects(
 
     db: Session = Depends(get_db),
@@ -105,8 +110,24 @@ def get_projects(
 
 ):
 
-    return db.query(
+    projects = db.query(
         Project
     ).filter(
         Project.owner_id == current_user.id
     ).all()
+
+    return [
+        {
+            "id": project.id,
+            "title": project.title,
+            "description": project.description,
+            "tech_stack": project.tech_stack,
+            "project_image":
+                generate_presigned_url(
+                    project.project_image
+                )
+                if project.project_image
+                else None
+        }
+        for project in projects
+    ]

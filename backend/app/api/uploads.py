@@ -60,15 +60,15 @@ def upload_profile_picture(
 
     db.refresh(current_user)
 
-    publish_event(
-        event_type="file_uploaded",
-        payload={
-            "file_type": "profile-picture",
-            "user_email": current_user.email,
-            "user_name": current_user.full_name,
-            "s3_key": key
-        }
-    )
+#    publish_event(
+#        event_type="file_uploaded",
+#        payload={
+#            "file_type": "profile-picture",
+#            "user_email": current_user.email,
+#            "user_name": current_user.full_name,
+#            "s3_key": key
+#       }
+#    )
 
     return {
         "message": "Profile picture uploaded",
@@ -147,6 +147,7 @@ def upload_project_image(
 @router.post("/resume")
 def upload_resume(
     file: UploadFile = File(...),
+    db: Session = Depends(get_db),
     current_user: User = Depends(
         get_current_user
     )
@@ -172,6 +173,12 @@ def upload_resume(
         file,
         "resumes"
     )
+
+    current_user.resume = key
+
+    db.commit()
+
+    db.refresh(current_user)
 
     publish_event(
         event_type="file_uploaded",
