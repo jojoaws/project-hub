@@ -61,7 +61,24 @@ function ProjectsPage() {
 
             <div className="project-image">
 
-              Project Image
+              {project.project_image ? (
+
+                <img
+                  src={project.project_image}
+                  alt="Project"
+                  style={{
+                    width: "100%",
+                    height: "200px",
+                    objectFit: "cover",
+                    borderRadius: "12px"
+                  }}
+                />
+
+              ) : (
+
+                "Project Image"
+
+              )}
 
             </div>
 

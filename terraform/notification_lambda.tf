@@ -84,13 +84,26 @@ resource "aws_lambda_function" "notification" {
 
   runtime = "python3.12"
 
-  handler = "lambda_function.lambda_handler"
+  handler = "notification.lambda_handler"
 
   filename = "../lambda/notification.zip"
 
   source_code_hash = filebase64sha256("../lambda/notification.zip")
 
   timeout = 30
+
+  environment {
+
+    variables = {
+
+      BUCKET_NAME = aws_s3_bucket.uploads.bucket
+
+      DB_SECRET_ARN = aws_secretsmanager_secret.db_credentials.arn
+
+      SES_SENDER_EMAIL = var.sender_email
+    }
+
+  }
 
 }
 

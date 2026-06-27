@@ -104,6 +104,7 @@ resource "aws_lambda_function" "thumbnail_generator" {
 
       DB_SECRET_ARN = aws_secretsmanager_secret.db_credentials.arn
 
+      SES_SENDER_EMAIL = var.sender_email
     }
 
   }

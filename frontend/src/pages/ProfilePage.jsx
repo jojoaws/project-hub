@@ -320,6 +320,18 @@ function ProfilePage() {
     Upload your resume (PDF only)
   </p>
 
+  {user?.resume_url && (
+    <p>
+      <a
+        href={user.resume_url}
+        target="_blank"
+        rel="noreferrer"
+      >
+        📄 View Resume
+      </a>
+    </p>
+  )}
+
   <button
     onClick={() =>
       document
@@ -329,6 +341,7 @@ function ProfilePage() {
         .click()
     }
   >
+
     Upload Resume
   </button>
 

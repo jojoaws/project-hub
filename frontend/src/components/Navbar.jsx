@@ -15,80 +15,39 @@ function Navbar() {
   };
 
   return (
-    <nav>
+    <nav className="navbar">
 
-      <Link to="/">
-        Home
-      </Link>
+      <div className="navbar-links">
 
-      {" "}
+        <Link to="/">Home</Link>
 
-      {!token && (
-        <>
-          <Link to="/about">
-            About
-          </Link>
+        {!token && (
+          <>
+            <Link to="/about">About</Link>
+            <Link to="/contact">Contact</Link>
+            <Link to="/login">Login</Link>
+            <Link to="/register">Register</Link>
+          </>
+        )}
 
-          {" "}
+        {token && (
+          <>
+            <Link to="/dashboard">Dashboard</Link>
+            <Link to="/profile">Profile</Link>
+            <Link to="/projects">Projects</Link>
+            <Link to="/about">About</Link>
+            <Link to="/contact">Contact</Link>
 
-          <Link to="/contact">
-            Contact
-          </Link>
+            <button
+              type="button"
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
+          </>
+        )}
 
-          {" "}
-
-          <Link to="/login">
-            Login
-          </Link>
-
-          {" "}
-
-          <Link to="/register">
-            Register
-          </Link>
-        </>
-      )}
-
-      {token && (
-        <>
-          <Link to="/dashboard">
-            Dashboard
-          </Link>
-
-          {" "}
-
-          <Link to="/profile">
-            Profile
-          </Link>
-
-          {" "}
-
-          <Link to="/projects">
-            Projects
-          </Link>
-
-          {" "}
-
-          <Link to="/about">
-            About
-          </Link>
-
-          {" "}
-
-          <Link to="/contact">
-            Contact
-          </Link>
-
-          {" "}
-
-          <button
-            type="button"
-            onClick={handleLogout}
-          >
-            Logout
-          </button>
-        </>
-      )}
+      </div>
 
     </nav>
   );
