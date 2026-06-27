@@ -14,5 +14,8 @@ variable "ops_email" {
   type = string
 }
 
+variable "terraform_state_bucket" {
+  type = string
+}
 
 
