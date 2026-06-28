@@ -4,6 +4,8 @@ on:
   push:
     paths:
       - "terraform/**"
+      - "lambda/**"
+      - "scripts/**"
 
 permissions:
   id-token: write
@@ -32,8 +34,12 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: ${{ secrets.AWS_REGION }}
 
+      - name: Build Lambda Packages
+        working-directory: .
+        run: ./scripts/build_lambda.sh
+
       - name: Terraform Init
-        run: terraform init
+        run: terraform init -input=false
 
       - name: Terraform Format Check
         run: terraform fmt -check

@@ -88,11 +88,11 @@ resource "aws_lambda_function" "thumbnail_generator" {
 
   runtime = "python3.12"
 
-  handler = "lambda_function.lambda_handler"
+  handler = "thumbnail.lambda_handler"
 
-  filename = "../lambda/function.zip"
+  filename = "${path.module}/../lambda/function.zip"
 
-  source_code_hash = filebase64sha256("../lambda/function.zip")
+  source_code_hash = filebase64sha256("${path.module}/../lambda/function.zip")
 
   timeout = 30
 

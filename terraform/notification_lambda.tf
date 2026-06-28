@@ -86,9 +86,9 @@ resource "aws_lambda_function" "notification" {
 
   handler = "notification.lambda_handler"
 
-  filename = "../lambda/notification.zip"
+  filename = "${path.module}/../lambda/notification.zip"
 
-  source_code_hash = filebase64sha256("../lambda/notification.zip")
+  source_code_hash = filebase64sha256("${path.module}/../lambda/notification.zip")
 
   timeout = 30
 
