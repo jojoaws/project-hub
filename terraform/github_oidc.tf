@@ -6,10 +6,6 @@ resource "aws_iam_openid_connect_provider" "github" {
     "sts.amazonaws.com"
   ]
 
-  thumbprint_list = [
-    "ffffffffffffffffffffffffffffffffffffffff"
-  ]
-
 }
 
 resource "aws_iam_role" "github_actions" {
@@ -66,7 +62,13 @@ resource "aws_iam_policy" "github_actions" {
         Effect = "Allow"
 
         Action = [
-          "iam:PassRole"
+          "iam:PassRole",
+          "iam:GetRole",
+          "iam:GetPolicy",
+          "iam:GetOpenIDConnectProvider",
+          "iam:ListAttachedRolePolicies",
+          "iam:ListRolePolicies"
+
         ]
 
         Resource = [
@@ -105,6 +107,25 @@ resource "aws_iam_policy" "github_actions" {
       },
 
       {
+        Effect = "Allow"
+
+        Action = [
+          "s3:GetBucketVersioning",
+          "s3:GetBucketPublicAccessBlock",
+          "s3:GetLifecycleConfiguration",
+          "s3:GetBucketPolicy",
+          "s3:GetBucketWebsite",
+          "s3:GetBucketTagging",
+          "s3:GetBucketEncryption"
+
+        ]
+
+        Resource = [
+          "arn:aws:s3:::${var.terraform_state_bucket}"
+        ]
+      },
+
+      {
 
         Effect = "Allow"
 
@@ -116,7 +137,9 @@ resource "aws_iam_policy" "github_actions" {
           "ecr:UploadLayerPart",
           "ecr:InitiateLayerUpload",
           "ecr:PutImage",
-          "ecr:BatchGetImage"
+          "ecr:BatchGetImage",
+          "ecr:DescribeRepositories",
+          "ecr:ListImages"
 
         ]
 
@@ -130,8 +153,98 @@ resource "aws_iam_policy" "github_actions" {
 
         Action = [
 
+          "ec2:DescribeImages",
+          "ec2:DescribeVpcs",
+          "ec2:DescribeSubnets",
+          "ec2:DescribeRouteTables",
+          "ec2:DescribeInternetGateways",
+          "ec2:DescribeNatGateways",
+          "ec2:DescribeAddresses",
+          "ec2:DescribeSecurityGroups",
+          "ec2:DescribeNetworkInterfaces",
+          "ec2:DescribeAvailabilityZones"
+
+        ]
+
+        Resource = "*"
+
+      },
+
+      {
+
+        Effect = "Allow"
+
+        Action = [
+
+          "cloudfront:ListOriginRequestPolicies",
+          "cloudfront:ListCachePolicies",
+          "cloudfront:GetOriginAccessControl",
+          "cloudfront:DescribeFunction",
+          "cloudfront:GetDistribution",
+          "cloudfront:GetDistributionConfig",
+          "cloudfront:GetFunction"
+
+        ]
+
+        Resource = "*"
+
+      },
+
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "logs:DescribeLogGroups",
+          "logs:DescribeLogStreams"
+
+        ],
+
+        "Resource" : "*"
+      },
+
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "sns:GetTopicAttributes",
+          "sns:ListSubscriptionsByTopic"
+
+        ],
+
+        "Resource" : "*"
+      },
+
+      {
+        Effect = "Allow"
+
+        Action = [
+          "secretsmanager:DescribeSecret",
+          "secretsmanager:GetSecretValue"
+        ]
+
+        Resource = "*"
+      },
+
+      {
+        Effect = "Allow"
+
+        Action = [
+          "ses:GetIdentityVerificationAttributes"
+        ]
+
+        Resource = "*"
+      },
+
+      {
+
+        Effect = "Allow"
+
+        Action = [
+
+          "ecs:DescribeClusters",
           "ecs:DescribeServices",
           "ecs:DescribeTaskDefinition",
+          "ecs:DescribeTaskSets",
+          "ecs:ListServices",
+          "ecs:ListTaskDefinitions",
           "ecs:RegisterTaskDefinition",
           "ecs:UpdateService"
 
