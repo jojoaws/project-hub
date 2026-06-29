@@ -62,21 +62,14 @@ resource "aws_iam_policy" "github_actions" {
         Effect = "Allow"
 
         Action = [
-          "iam:PassRole",
-          "iam:GetRole",
-          "iam:GetPolicy",
-          "iam:GetOpenIDConnectProvider",
-          "iam:ListAttachedRolePolicies",
-          "iam:ListRolePolicies"
-
+          "iam:PassRole"
         ]
 
         Resource = [
-
           aws_iam_role.ecs_task_role.arn,
-
-          aws_iam_role.ecs_execution_role.arn
-
+          aws_iam_role.ecs_execution_role.arn,
+          aws_iam_role.lambda_role.arn,
+          aws_iam_role.notification_lambda_role.arn
         ]
       },
 
@@ -84,169 +77,35 @@ resource "aws_iam_policy" "github_actions" {
         Effect = "Allow"
 
         Action = [
-          "s3:ListBucket"
-        ]
 
-        Resource = [
-          "arn:aws:s3:::${var.terraform_state_bucket}"
-        ]
-      },
+          "ec2:*",
+          "elasticloadbalancing:*",
+          "autoscaling:*",
+          "application-autoscaling:*",
 
-      {
-        Effect = "Allow"
+          "ecs:*",
+          "ecr:*",
 
-        Action = [
-          "s3:GetObject",
-          "s3:PutObject",
-          "s3:DeleteObject"
-        ]
+          "s3:*",
 
-        Resource = [
-          "arn:aws:s3:::${var.terraform_state_bucket}/*"
-        ]
-      },
+          "cloudfront:*",
 
-      {
-        Effect = "Allow"
+          "cloudwatch:*",
 
-        Action = [
-          "s3:GetBucketVersioning",
-          "s3:GetBucketPublicAccessBlock",
-          "s3:GetLifecycleConfiguration",
-          "s3:GetBucketPolicy",
-          "s3:GetBucketWebsite",
-          "s3:GetBucketTagging",
-          "s3:GetBucketEncryption"
+          "logs:*",
 
-        ]
+          "lambda:*",
 
-        Resource = [
-          "arn:aws:s3:::${var.terraform_state_bucket}"
-        ]
-      },
+          "sns:*",
 
-      {
+          "rds:*",
 
-        Effect = "Allow"
+          "ses:*",
 
-        Action = [
+          "secretsmanager:*",
 
-          "ecr:GetAuthorizationToken",
-          "ecr:BatchCheckLayerAvailability",
-          "ecr:CompleteLayerUpload",
-          "ecr:UploadLayerPart",
-          "ecr:InitiateLayerUpload",
-          "ecr:PutImage",
-          "ecr:BatchGetImage",
-          "ecr:DescribeRepositories",
-          "ecr:ListImages"
-
-        ]
-
-        Resource = "*"
-
-      },
-
-      {
-
-        Effect = "Allow"
-
-        Action = [
-
-          "ec2:DescribeImages",
-          "ec2:DescribeVpcs",
-          "ec2:DescribeSubnets",
-          "ec2:DescribeRouteTables",
-          "ec2:DescribeInternetGateways",
-          "ec2:DescribeNatGateways",
-          "ec2:DescribeAddresses",
-          "ec2:DescribeSecurityGroups",
-          "ec2:DescribeNetworkInterfaces",
-          "ec2:DescribeAvailabilityZones"
-
-        ]
-
-        Resource = "*"
-
-      },
-
-      {
-
-        Effect = "Allow"
-
-        Action = [
-
-          "cloudfront:ListOriginRequestPolicies",
-          "cloudfront:ListCachePolicies",
-          "cloudfront:GetOriginAccessControl",
-          "cloudfront:DescribeFunction",
-          "cloudfront:GetDistribution",
-          "cloudfront:GetDistributionConfig",
-          "cloudfront:GetFunction"
-
-        ]
-
-        Resource = "*"
-
-      },
-
-      {
-        "Effect" : "Allow",
-        "Action" : [
-          "logs:DescribeLogGroups",
-          "logs:DescribeLogStreams"
-
-        ],
-
-        "Resource" : "*"
-      },
-
-      {
-        "Effect" : "Allow",
-        "Action" : [
-          "sns:GetTopicAttributes",
-          "sns:ListSubscriptionsByTopic"
-
-        ],
-
-        "Resource" : "*"
-      },
-
-      {
-        Effect = "Allow"
-
-        Action = [
-          "secretsmanager:DescribeSecret",
-          "secretsmanager:GetSecretValue"
-        ]
-
-        Resource = "*"
-      },
-
-      {
-        Effect = "Allow"
-
-        Action = [
-          "ses:GetIdentityVerificationAttributes"
-        ]
-
-        Resource = "*"
-      },
-
-      {
-
-        Effect = "Allow"
-
-        Action = [
-
-          "ecs:DescribeClusters",
-          "ecs:DescribeServices",
-          "ecs:DescribeTaskDefinition",
-          "ecs:DescribeTaskSets",
-          "ecs:ListServices",
-          "ecs:ListTaskDefinitions",
-          "ecs:RegisterTaskDefinition",
-          "ecs:UpdateService"
+          "iam:Get*",
+          "iam:List*",
 
         ]
 
